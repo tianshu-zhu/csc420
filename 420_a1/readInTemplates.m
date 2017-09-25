@@ -3,7 +3,7 @@ function [templates, dimensions] = readInTemplates
 inputFolderRoot = 'DIGITS';
 idx = 1 ;
 for( s = 1 : 3 )
-    inputFolder = fullfile( inputFolderRoot , ['SCALE_', num2str(s)]) ;
+    inputFolder = fullfile( inputFolderRoot , ['Scale_', num2str(s)]) ;
     
     for( i = 0 : 9 )
         templateFile = [ num2str(i), '.png'];
