@@ -1,0 +1,19 @@
+# Created by Octave 4.0.3, Sun Sep 17 18:56:14 2017 EDT <zhutianshu@Tianshus-Macbook-Pro.local>
+# name: a
+# type: matrix
+# rows: 3
+# columns: 6
+ 1 0 0 0.1967450985221608 0.5256680804326446 0.4629027577274373
+ 0 1 0 0.304307317171227 0.6497633920052959 0.8201434464560091
+ 0 0 1 0.5991546674684441 0.4333914147239291 0.834537228044548
+
+
+# name: b
+# type: diagonal matrix
+# rows: 3
+# columns: 3
+1
+2
+3
+
+
