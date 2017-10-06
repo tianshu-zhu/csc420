@@ -1,11 +1,11 @@
 image = imread('building.jpg');
-% imagesc(image);
+imagesc(image);
 I = double(rgb2gray(image));
 [rows, cols] = size(I);
 
 % compute average Ix2, Iy2, Ixy
 [Ix, Iy] = imgradientxy(I, 'prewitt');
-sigma = 5;
+sigma = 2;
 avg_Ix2 = imgaussfilt(Ix.^2, sigma);
 avg_Iy2 = imgaussfilt(Iy.^2, sigma);
 avg_Ixy = imgaussfilt(Ix.*Iy, sigma);
@@ -13,7 +13,7 @@ avg_Ixy = imgaussfilt(Ix.*Iy, sigma);
 % alpha is a constat (0.4 to 0.6)
 alpha = 0.04;
 threshold = 20;
-R = (avg_Ix2.*avg_Iy2 - avg_Ixy.^2) - alpha.*(avg_Ix2 + avg_Iy2).^2;
+corners = (avg_Ix2.*avg_Iy2 - avg_Ixy.^2) - alpha*(avg_Ix2 + avg_Iy2).^2;
 
 % for row = 1:rows
 %     for col = 1:cols
