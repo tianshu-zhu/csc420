@@ -1,0 +1,1 @@
+%pick out the pixels in img whose intensity > Tfunction candidates = q3_e(maxCorr, T)idx = 1;for (row = 1:1268)    for (col = 1:591)        if (maxCorr(row, col) > T)            candidates(idx).row = row;            candidates(idx).col = col;            idx = idx + 1;        end    endend

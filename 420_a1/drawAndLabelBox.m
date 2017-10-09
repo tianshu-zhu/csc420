@@ -17,4 +17,5 @@ if( digitToShow == -1 )
     digitToShow = 9 ;
 end
 
-text( startX , startY , num2str(digitToShow) , 'Color', 'yellow') ;
+text( startX , startY , num2str(digitToShow) , 'Color', 'white', ...
+    'FontSize', 16, 'FontWeight', 'bold') ;

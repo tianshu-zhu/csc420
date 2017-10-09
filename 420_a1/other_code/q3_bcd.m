@@ -22,9 +22,3 @@ end
 
 %q3 d
 [maxCorr, maxIdx] = max(corrArray, [], 3);
-
-%q3 e
-candidates = q3_e(maxCorr, 0.65);
-
-%q3 f
-q3_f;
