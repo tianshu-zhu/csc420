@@ -24,7 +24,8 @@ center = [mean(x(:)) mean(y(:))];
 distance = sqrt(((x-center(1)).^2+(y-center(2)).^2));
 domain = double(distance <= radius);
 
-% apply 
+% apply non_maximal supression and threshold to reliability ratios. plot
+% out the remaining interest points
 order = sum(domain(:));
 R2 = ordfilt2(R1, order, domain);
 [rows, cols]  = find((double(R2 == R1) & double(R1 > threshold)));
