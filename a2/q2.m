@@ -21,7 +21,7 @@ for i = 1:size(d1, 2)
 end
 match = sortrows(match', 5)';
 
-% plot matching
+% visualize matching
 matching = figure;
 showMatchedFeatures(img1,img2,match(1:2, :)',match(3:4, :)', 'montage');
 
