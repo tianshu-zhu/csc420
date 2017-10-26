@@ -1,8 +1,9 @@
 % match: match matrix from sift(). Note to set img1 as moving image, set
 % img2 as fixed image.
-% threshold2: for ransac, default 1
+% threshold: for ransac, default 1
 % round: round of ransac, default 15
-function bestTform = ransac(match, threshold2, round)
+% return a affine transformation based on match
+function bestTform = ransac(match, threshold, round)
 
 % q2 a:Ransac
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -22,7 +23,7 @@ for i = 1:round
     movingMatches = match(:, 1:2);
     fixedMatches = match(:, 3:4);
     transedMovingMatches = transformPointsForward(tform,movingMatches);
-    numInliers = sum(sum(abs(fixedMatches - transedMovingMatches) <= threshold2));
+    numInliers = sum(sum(abs(fixedMatches - transedMovingMatches) <= threshold));
     if numInliers > maxNumInliers
         maxNumInliers = numInliers;
         bestTform = tform;
