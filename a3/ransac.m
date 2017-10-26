@@ -29,3 +29,4 @@ for i = 1:round
         bestTform = tform;
     end
 end
+% fprintf('%d\n', maxNumInliers);
