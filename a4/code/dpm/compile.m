@@ -42,6 +42,7 @@ end
 % Turn all warnings on
 mexcmd = [mexcmd ' CXXFLAGS="\$CXXFLAGS -Wall"'];
 mexcmd = [mexcmd ' LDFLAGS="\$LDFLAGS -Wall"'];
+mexcmd = [mexcmd, ' -DMX_COMPAT_32' ] ;
 
 if nargin < 3
   % Build feature vector cache code

@@ -9,7 +9,7 @@ imr = imresize(im,f); % if we resize, it works better for small objects
 
 % detect objects
 fprintf('running the detector, may take a few seconds...\n');
-tic;
+tic; % measure running time
 [ds, bs] = imgdetect(imr, model, model.thresh); % you may need to reduce the threshold if you want more detections
 e = toc;
 fprintf('finished! (took: %0.4f seconds)\n', e);
