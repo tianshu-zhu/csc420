@@ -121,6 +121,9 @@ switch whatdata
     case {'car_ds', 'car.bs', 'person_ds', 'person_bs', 'cyclist_bs', 'cyclist_ds'}
         filename = fullfile(RESULTS_DIR, strcat(imname, '_', whatdata, '.mat'));
         data = load(filename, whatdata);
+    case 'depth'
+        filename = fullfile(RESULTS_DIR, strcat(imname, '_', whatdata, '.mat'));
+        data = load(filename, whatdata);
     otherwise 
         disp('unknown data type, try again');
     
