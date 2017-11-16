@@ -99,7 +99,7 @@ switch whatdata
            end;
            data.im = imgdata.im;
         end;
-    case {'detector-car', 'detector-person', 'detector-pedestrian', 'detector-cyclist'}
+    case {'detector-car', 'detector-person', 'detector-pedestrian', 'detector-cyclist', 'detector-bicycle'}
         cls = strrep(whatdata, 'detector-', '');
         files = dir(fullfile(DETECTOR_DIR, sprintf('%s_final*.mat', cls)));
         if isempty(files)
@@ -118,6 +118,9 @@ switch whatdata
             spim = double(spim);
         end;
         data.spim = spim;
+    case {'car_ds', 'car.bs', 'person_ds', 'person_bs', 'cyclist_bs', 'cyclist_ds'}
+        filename = fullfile(RESULTS_DIR, strcat(imname, '_', whatdata, '.mat'));
+        data = load(filename, whatdata);
     otherwise 
         disp('unknown data type, try again');
     

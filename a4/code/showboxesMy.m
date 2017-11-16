@@ -1,4 +1,4 @@
-function showboxes(im, boxes, col, out)
+function showboxesMy(im, boxes, col, out)
 % Draw bounding boxes on top of an image.
 %   showboxes(im, boxes, out)
 %

@@ -8,5 +8,5 @@ disparity = disparity_struct.disparity;
 depth = f*T./(disparity);
 figure('position', [100, 100,size(disparity,2)*0.7, size(disparity,1)*0.7]);
 subplot('position', [0,0,1,1]);
-imagesc(depth);
+imagesc(depth, [0,256]);
 axis equal;
