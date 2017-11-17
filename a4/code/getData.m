@@ -2,7 +2,10 @@ function data = getData(imname, imset, whatdata)
 
 % example to run: data = getData('000120', 'train', 'left');
 % to load a detector, e.g.: data = getData([],[],'detector-car');
-
+% 'location' for 3d locations
+% 'depth" for depth
+% 'car_ds', 'car.bs', 'person_ds', 'person_bs', 'cyclist_bs', 'cyclist_ds'
+% for corresponding ds, bs
 if nargin < 2
     fprintf('run with: data = getData(imname, imset, whatdata);\n');
     fprintf('where:\n');
@@ -11,6 +14,9 @@ if nargin < 2
     fprintf('   ''left-plot'' and ''right-plot'' and ''disp-plot'' will plot the data\n');
     fprintf('   ''detector-car'' will load a car detector, ''detector-person'', ''detector-cyclist'' similarly\n');
     fprintf('   ''superpixels'' (if you ran spsstereo code for all images, you also got superpixels)\n');
+    fprintf('   ''location'' for 3d locations\n');
+    fprintf('   ''depth'' for depth\n');
+    fprintf('   ''car_ds'', ''car.bs'', ''person_ds'', ''person_bs'', ''cyclist_bs'', ''cyclist_ds'' for corresponding ds, bs\n');
     fprintf('if the function doesn''t work, please check if globals.m is correctly set\n');
 end;
 
@@ -124,6 +130,9 @@ switch whatdata
     case 'depth'
         filename = fullfile(RESULTS_DIR, strcat(imname, '_', whatdata, '.mat'));
         data = load(filename, whatdata);
+    case 'location'
+        filename = fullfile(RESULTS_DIR, strcat(imname, '_', whatdata, '.mat'));
+        data = load(filename, whatdata);        
     otherwise 
         disp('unknown data type, try again');
     

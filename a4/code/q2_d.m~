@@ -1,0 +1,29 @@
+globals;
+imnames = {'004945', '004964', '005002'};
+for i = 1:length(imnames)
+    imname = imnames{i};
+    depth_data = getData(imname, 'test', 'depth');
+    depth = depth_data.depth;
+    calib_data = getData(imname, 'test', 'calib');
+    K = calib_data.K;
+    num_rows = size(depth, 1);
+    num_cols = size(depth, 2);
+    locations = zeros(num_rows, num_cols, 3);
+    for row = 1:num_rows
+        x = row;
+        for col = 1:num_cols
+            y = num_cols+1-col;
+            Z = depth(row, col);
+            result = K\[x; y; 1];
+            w = Z/result(3);
+            X = result(1)*w;
+            Y = result(2)*w;
+            locations(row, col, :) = [X Y Z];
+        end
+    end
+     [cyclist_ds, cyclist_bs] = detectObject('detector-cyclist', imname, 0, 0.1);
+    cyclist_ds_filename = fullfile(RESULTS_DIR, strcat(imname, '_cyclist_ds.mat'));
+    cyclist_bs_filename = fullfile(RESULTS_DIR, strcat(imname, '_cyclist_bs.mat'));
+    save(cyclist_ds_filename, 'cyclist_ds');
+    save(cyclist_bs_filename, 'cyclist_bs');
+end
