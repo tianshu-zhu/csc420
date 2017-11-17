@@ -1,5 +1,4 @@
 function drawAndLabelBoxes(ds, label, fig)
-
 num_rows = size(ds, 1);
 if num_rows > 0
     for row = 1:num_rows

@@ -21,15 +21,14 @@ for i = 1:length(imnames)
     
     % find and label all pixel that is segmented
     for j = 1:num_detections
-        center_location = all_ds(i, 7:9);
+        center_location = all_ds(j, 7:9);
         x_left = round(all_ds(j, 1)); x_left = min(max(x_left, 1), num_cols);
         x_right = round(all_ds(j, 3)); x_right = min(max(x_right, 1), num_cols);
         y_top = round(all_ds(j, 2)); y_top = min(max(y_top, 1), num_rows);
         y_bottom = round(all_ds(j, 4)); y_bottom = min(max(y_bottom, 1), num_rows);
         for col = x_left:x_right
-            for row = y_top:y_bottom  
-             
-                if norm(reshape(location(row, col, :), [1 3])-center_location) < 30
+            for row = y_top:y_bottom              
+                if norm(reshape(location(row, col, :), [1 3])-center_location) <= 15
                     segmentation(row, col) = j;
                 end
             end
@@ -37,4 +36,5 @@ for i = 1:length(imnames)
     end
     f = figure;
     imagesc(segmentation);
+    truesize(f);
 end
