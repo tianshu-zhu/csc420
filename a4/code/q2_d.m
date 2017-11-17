@@ -18,9 +18,9 @@ for i = 1:length(imnames)
     % compute and save 3d location for each pixel in image with name imname
     location = zeros(num_rows, num_cols, 3);
     for row = 1:num_rows
-        x = row;
+        y = num_rows+1-row;
         for col = 1:num_cols
-            y = num_cols+1-col;
+            x = col;
             Z = depth(row, col);
             result = K\[x; y; 1];
             w = Z/result(3);
