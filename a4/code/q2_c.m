@@ -18,5 +18,8 @@ for i = 1:length(imnames)
     drawAndLabelBoxes(car_ds, 'car', fig);
     drawAndLabelBoxes(person_ds, 'person', fig);
     drawAndLabelBoxes(cyclist_ds, 'cyclist', fig);
+    % save result
+    result_name = fullfile('../results', strcat('q2_c_', imname, '.png'));
+    saveas(fig, result_name); 
 %     imname = fgetl(test_fid);
 end

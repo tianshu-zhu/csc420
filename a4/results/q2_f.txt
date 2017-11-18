@@ -1,0 +1,8 @@
+for image 004945: 3 car, 1 person, and 1 cyclist are detected.
+There is a car on your right, which is 12 meters away from you
+
+for image 004964: 3 car, 1 person, and 1 cyclist are detected.
+There is a person on your left, which is 23 meters away from you
+
+for image 005002: 3 car, 0 person, and 0 cyclist are detected.
+There is a car on your left, which is 24 meters away from you

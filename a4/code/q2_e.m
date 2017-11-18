@@ -13,7 +13,7 @@ for i = 1:length(imnames)
     cyclist_ds = cyclist_ds_data.cyclist_ds;
     
     % concatenate all ds together
-    all_ds = [car_ds; person_ds; cyclist_ds];
+    all_ds = [cyclist_ds; car_ds; person_ds];
     num_rows = size(location, 1);
     num_cols = size(location, 2);
     num_detections = size(all_ds, 1);
@@ -34,7 +34,10 @@ for i = 1:length(imnames)
             end
         end
     end
-    f = figure;
+    fig = figure;
     imagesc(segmentation);
-    truesize(f);
+    truesize(fig);
+    % save result
+    result_name = fullfile('../results', strcat('q2_e_', imname, '.png'));
+    saveas(fig, result_name); 
 end

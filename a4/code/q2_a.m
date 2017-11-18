@@ -13,8 +13,11 @@ for i = 1:length(imnames)
     depth_filename = fullfile(RESULTS_DIR, strcat(imname, '_depth.mat'));
     save(depth_filename, 'depth');
     % plot depth
-    figure('position', [100, 100,size(disparity,2)*0.7, size(disparity,1)*0.7]);
+    fig = figure('position', [100, 100,size(disparity,2)*0.7, size(disparity,1)*0.7]);
     subplot('position', [0,0,1,1]);
     imagesc(depth, [0,256]);
     axis equal;
+    % save result
+    result_name = fullfile('../results', strcat('q2_a_', imname, '.png'));
+    saveas(fig, result_name); 
 end
