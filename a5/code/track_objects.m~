@@ -32,16 +32,8 @@ for i = start_frame:end_frame
         end
         sims(det_cur, det_next) = 0;
     end
+    num_track = size(tracks, 2
 end;
-
-% remove tracks with only two detections
-num_track = size(tracks, 2);
-for j = 1:num_track
-    if size(tracks{j}, 1) == 2
-        tracks{j} = [];
-    end
-end
-tracks = tracks(~cellfun('isempty',tracks)); 
 
 end
 
@@ -50,13 +42,12 @@ function tracks = add_track(tracks, new_track)
 % add new_track to tracks
 num_track = size(tracks,2);
 is_in = 0;
-for k = 1:num_track
-    track = tracks{k};
+for i = 1:num_track
+    track = tracks{i};
     if isequal(track(size(track,1),:),new_track(1,:))
         track = [track;new_track(2,:)];
-        tracks{k} = track;
+        tracks{i} = track;
         is_in = 1;
-        break;
     end
 end
 if not(is_in)
