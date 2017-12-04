@@ -1,10 +1,8 @@
-function showboxes(im, boxes, out)
+function showboxes(im, dets, box_color, out)
 % Draw bounding boxes on top of an image.
-%   showboxes(im, boxes, out)
-%
-%   If out is given, a pdf of the image is generated (requires export_fig).
+% If out is given, a file of the image is generated (requires export_fig).
 
-if nargin > 2
+if nargin > 3
   % different settings for producing pdfs
   print = true;
   %wwidth = 2.25;
@@ -18,12 +16,13 @@ if nargin > 2
   im = imresize(im, scale, 'method', 'cubic');
   %f = fspecial('gaussian', [3 3], 0.5);
   %im = imfilter(im, f);
-  boxes = (boxes-1)*scale+1;
+  dets = (dets-1)*scale+1;
 else
   print = false;
   cwidth = 2;
 end
 
+fig = figure;
 image(im); 
 if print
   truesize(gcf);
@@ -32,16 +31,16 @@ axis image;
 axis off;
 set(gcf, 'Color', 'white');
 
-if ~isempty(boxes)
-  numfilters = floor(size(boxes, 2)/4);
+if ~isempty(dets)
+  numfilters = floor(size(dets, 2)/4);
   if print
     % if printing, increase the contrast around the boxes
     % by printing a white box under each color box
     for i = 1:numfilters
-      x1 = boxes(:,1+(i-1)*4);
-      y1 = boxes(:,2+(i-1)*4);
-      x2 = boxes(:,3+(i-1)*4);
-      y2 = boxes(:,4+(i-1)*4);
+      x1 = dets(:,1+(i-1)*4);
+      y1 = dets(:,2+(i-1)*4);
+      x2 = dets(:,3+(i-1)*4);
+      y2 = dets(:,4+(i-1)*4);
       % remove unused filters
       del = find(((x1 == 0) .* (x2 == 0) .* (y1 == 0) .* (y2 == 0)) == 1);
       x1(del) = [];
@@ -69,10 +68,10 @@ if ~isempty(boxes)
   if 1
   %for i = numfilters:-1:1
   for i = 1:1
-    x1 = boxes(:,1+(i-1)*4);
-    y1 = boxes(:,2+(i-1)*4);
-    x2 = boxes(:,3+(i-1)*4);
-    y2 = boxes(:,4+(i-1)*4);
+    x1 = dets(:,1+(i-1)*4);
+    y1 = dets(:,2+(i-1)*4);
+    x2 = dets(:,3+(i-1)*4);
+    y2 = dets(:,4+(i-1)*4);
     % remove unused filters
     del = find(((x1 == 0) .* (x2 == 0) .* (y1 == 0) .* (y2 == 0)) == 1);
     x1(del) = [];
@@ -80,7 +79,7 @@ if ~isempty(boxes)
     y1(del) = [];
     y2(del) = [];
     if i == 1
-      c = 'r'; %[160/255 0 0];
+      c = box_color; %[160/255 0 0];
       s = '-';
 %    elseif i ==  13+1 || i == 14+1
 %      c = 'c';
@@ -91,11 +90,12 @@ if ~isempty(boxes)
     end
     line([x1 x1 x2 x2 x1]', [y1 y2 y2 y1 y1]', 'color', c, 'linewidth', cwidth, 'linestyle', s);
   end
-  end;
+  end
   end
 
 % save to pdf
 if print
   % requires export_fig from http://www.mathworks.com/matlabcentral/fileexchange/23629-exportfig
-  export_fig([out]);
+  % export_fig([out]);
+  saveas(fig, out);
 end

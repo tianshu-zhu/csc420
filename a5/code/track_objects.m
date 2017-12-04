@@ -1,68 +1,103 @@
 function tracks = track_objects()
-% this is a very simple tracking algo
-% for more serious tracking, look-up the papers in the projects pdf
-% since process 2 frame at a time, then end at frame 71
-FRAME_DIR = '../data/frames/';
-DET_DIR = '../data/detections/';
-start_frame = 62;
-end_frame = 71;
-tracks = {};
+    % this is a very simple tracking algo
+    % for more serious tracking, look-up the papers in the projects pdf
+    % since process 2 frame at a time, then end at frame 71
+    % return tracks which is a cell array
+    % each element(track) in tracks is a nx7 array
+    % for each row of a single track, first element is frame, det in remaining.
+    FRAME_DIR = '../data/frames/';
+    DET_DIR = '../data/detections/';
+    TRACKS_DIR = '../tracks';
+    start_frame = 62;
+    end_frame = 71;
+    tracks = {};
 
-for i = start_frame:end_frame
-    im_cur = imread(fullfile(FRAME_DIR, sprintf('%06d.jpg', i)));
-    data = load(fullfile(DET_DIR, sprintf('%06d_dets.mat', i)));
-    dets_cur = data.dets;
-    
-    im_next = imread(fullfile(FRAME_DIR, sprintf('%06d.jpg', i+1)));
-    data = load(fullfile(DET_DIR, sprintf('%06d_dets.mat', i+1)));
-    dets_next = data.dets;
-   
-    sims = compute_similarity(dets_cur, dets_next, im_cur, im_next);
-    
-    % add disjunct pairs greedily
-    tracked = zeros(0, 2);
-    while sum(sims(:)) > 0
-        [sim, I] = max(sims(:));
-        [det_cur, det_next] = ind2sub(size(sims), I);
-        new_track = [i det_cur; i+1 det_next];
-        if not(ismember(new_track(1,:), tracked, 'rows')) &&...
-                not(ismember(new_track(1,:), tracked, 'rows'))
-            tracked = [tracked; new_track(1,:); new_track(2,:)];
-            tracks = add_track(tracks, new_track);
+    for frame = start_frame:end_frame
+        im_cur = imread(fullfile(FRAME_DIR, sprintf('%06d.jpg', frame)));
+        data = load(fullfile(DET_DIR, sprintf('%06d_dets.mat', frame)));
+        dets_cur = data.dets;
+
+        im_next = imread(fullfile(FRAME_DIR, sprintf('%06d.jpg', frame+1)));
+        data = load(fullfile(DET_DIR, sprintf('%06d_dets.mat', frame+1)));
+        dets_next = data.dets;
+
+        sims = compute_similarity(dets_cur, dets_next, im_cur, im_next);
+
+        % add disjunct pairs greedily
+        tracked = zeros(0, 7);
+        while sum(sims(:)) > 0
+            [sim, I] = max(sims(:));
+            [det_cur_index, det_next_index] = ind2sub(size(sims), I);
+            new_track = [frame dets_cur(det_cur_index,:); frame+1 dets_next(det_next_index,:)];
+            if not(ismember(new_track(1,:), tracked, 'rows')) &&...
+                    not(ismember(new_track(2,:), tracked, 'rows'))
+                tracked = [tracked; new_track(1,:); new_track(2,:)];
+                tracks = add_track(tracks, new_track);
+            end
+            sims(det_cur_index, det_next_index) = 0;
         end
-        sims(det_cur, det_next) = 0;
     end
-end;
 
-% remove tracks with only two detections
-num_track = size(tracks, 2);
-for j = 1:num_track
-    if size(tracks{j}, 1) == 2
-        tracks{j} = [];
+    % remove tracks with <= 5 detections
+    num_track = size(tracks, 2);
+    for i1 = 1:num_track
+        if size(tracks{i1}, 1) <= 5
+            tracks{i1} = [];
+        end
     end
-end
-tracks = tracks(~cellfun('isempty',tracks)); 
-
+    tracks = tracks(~cellfun('isempty',tracks)); 
+    
+    % create one figure for each of the frame
+    figs = {}
+    for frame = start_frame:end_frame+1
+        im = imread(fullfile(FRAME_DIR, sprintf('%06d.jpg', frame)));
+        fig = figure;
+        imshow(im);
+        figs{frame} = fig;
+    end
+    
+    % draw boxes for all the track
+    colors = ['r' 'g' 'b' 'y' 'm' 'c' 'w' 'k'];
+    for i2 = 1:size(tracks, 2)
+        track = tracks{i2};
+        color = colors(i2);
+        for i3 = 1:size(track, 1)
+            frame = track(i3, 1)
+            det = track(i3, 2:7);
+            draw_boxes(figs{frame}, det, color);
+        end
+    end
+    
+    % save tracking output
+    for frame = start_frame:end_frame+1
+        fig = figs{frame};
+        saveas(fig, fullfile(TRACKS_DIR, sprintf('%06d_tracks.jpg', frame)));
+    end
 end
 
 
 function tracks = add_track(tracks, new_track)
-% add new_track to tracks
-num_track = size(tracks,2);
-is_in = 0;
-for k = 1:num_track
-    track = tracks{k};
-    if isequal(track(size(track,1),:),new_track(1,:))
-        track = [track;new_track(2,:)];
-        tracks{k} = track;
-        is_in = 1;
-        break;
+    % add new_track to tracks
+    num_track = size(tracks,2);
+    is_in = 0;
+    for k = 1:num_track
+        track = tracks{k};
+        if isequal(track(size(track,1),:),new_track(1,:))
+            track = [track;new_track(2,:)];
+            tracks{k} = track;
+            is_in = 1;
+            break;
+        end
+    end
+    if not(is_in)
+        tracks{num_track+1} = new_track;
     end
 end
-if not(is_in)
-    tracks{num_track+1} = new_track;
-end
 
+
+function visualize(tracks, out_dir)
+    % visualize tracking and store output to out_dir
+    
 end
 
 
